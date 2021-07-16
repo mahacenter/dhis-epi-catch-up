@@ -82,7 +82,7 @@ const pentaDropoutIndicator = {
     },
 };
 export const customIndicators = [
-    pentaDropoutIndicator,
+    // pentaDropoutIndicator,
 ]
 
 export const customIndicatorById = _.keyBy(customIndicators, indicator => indicator.id);
