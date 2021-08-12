@@ -1,7 +1,7 @@
 import {Card} from '@dhis2/ui-core'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import Accordion from '@material-ui/core/Accordion'
+import AccordionDetails from '@material-ui/core/AccordionDetails'
+import AccordionSummary from '@material-ui/core/AccordionSummary'
 import Box from '@material-ui/core/Box'
 import CardContent from '@material-ui/core/CardContent'
 import Checkbox from '@material-ui/core/Checkbox';
@@ -59,11 +59,12 @@ _.each(periods, (v, k) => (current[k] = moment().format(v.currentFormat)))
 
 export const Panel = () => {
     const data = useContext(IndicatorsContext);
+    console.log('Panel', data.indicatorGroups);
     var previousApiPeriod = '201901';
 
-    const defaultIndicatorGroup = data.indicatorGroups.indicatorGroups[0].id;
-    const defaultIndicator = data.indicatorGroups.indicatorGroups[0].indicators[0].id;
-    const defaultLegend = data.indicatorGroups.indicatorGroups[0].indicators[0].legendSet ? data.indicatorGroups.indicatorGroups[0].indicators[0].legendSet.id : 'auto';
+    const defaultIndicatorGroup = data.indicatorGroups.indicatorGroups[0]?.id;
+    const defaultIndicator = data.indicatorGroups.indicatorGroups[0]?.indicators[0].id;
+    const defaultLegend = data.indicatorGroups.indicatorGroups[0]?.indicators[0].legendSet ? data.indicatorGroups.indicatorGroups[0].indicators[0].legendSet.id : 'auto';
     const defaultOrganisationUnitLevel = data.organisationUnitLevels.organisationUnitLevels[1].level;
 
     const [indicatorGroup, setIndicatorGroup] = useState(defaultIndicatorGroup);
@@ -219,7 +220,7 @@ export const Panel = () => {
         }
     }, [legend]);
 
-    if (!data || !indicatorGroup) return null
+    if (!data || !indicatorGroup) return <span>No data...</span>;
 
     const sliderTest = history <= timeScale.length
     const sliderPos = rectifySliderPosition(sliderTest)
@@ -388,14 +389,14 @@ export const Panel = () => {
                                 <CircleLegendEdition legend={circleLegend} onChange={value =>setCircleLegend(value)} />
                             </TabPanel>
                             <Box mt={2}>
-                                <ExpansionPanel>
-                                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                         <Box display="flex" flexDirection="column">
                                             <span style={{color: 'red', fontWeight: 'bold'}}>New indicators for catch-up campaigns</span>
                                             <span>Select the indicators so to activate the innovative visualizations, which are displayed below the bar graphs</span>
                                         </Box>
-                                    </ExpansionPanelSummary>
-                                    <ExpansionPanelDetails>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
                                         <FormGroup>
                                             <FormControlLabel
                                                 label="Coverage rate difference 2019/2020"
@@ -410,8 +411,8 @@ export const Panel = () => {
                                                          color="primary"/>}
                                             />}
                                         </FormGroup>
-                                    </ExpansionPanelDetails>
-                                </ExpansionPanel>
+                                    </AccordionDetails>
+                                </Accordion>
                             </Box>
                         </Card>
                     </Grid>

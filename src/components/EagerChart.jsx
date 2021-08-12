@@ -3,16 +3,18 @@ import {CircularLoader} from '@dhis2/ui-core'
 import * as _ from 'lodash'
 import {Chart} from "./Chart";
 import {getIndicatorData, getDataElement, mapDataElementResult} from "../js/api";
+import {useConfig} from "@dhis2/app-runtime";
 
 export const EagerChart = props => {
     const [areaPeriodsData, setAreaPeriodsData] = useState()
     const [absolutePeriodsData, setAbsolutePeriodsData] = useState()
+    const config = useConfig();
 
     useEffect(() => {
         const fetchAreaPeriodsData = () => {
             setAreaPeriodsData(null);
 
-            const periodsDataPromises = props.timeScale.map(period => getIndicatorData({
+            const periodsDataPromises = props.timeScale.map(period => getIndicatorData(config, {
                 indicator: props.dx,
                 ouLevel: props.ouLevel,
                 period: period.value,
@@ -29,7 +31,7 @@ export const EagerChart = props => {
                 setAbsolutePeriodsData('loading');
             }
 
-            const periodsDataPromises = props.timeScale.map(period => getDataElement({
+            const periodsDataPromises = props.timeScale.map(period => getDataElement(config, {
                 dataElement: props.circleLegend.dataElement.id,
                 ouLevel: props.ouLevel,
                 period: period.value,

@@ -2,14 +2,16 @@ import React, {useEffect, useState} from 'react'
 import {CircularLoader} from '@dhis2/ui-core'
 import {Map} from './Map'
 import {getIndicatorData} from './../js/api'
+import {useConfig} from "@dhis2/app-runtime";
 
 export const EagerMap = props => {
     const {timeScale, ouLevel, isReady, dx} = props;
     const [isLoading, setIsLoading] = useState(true);
+    const config = useConfig();
 
     useEffect(() => {
         const getData = period => {
-            return getIndicatorData({
+            return getIndicatorData(config, {
                 indicator: dx,
                 ouLevel: ouLevel,
                 period: period.value,
@@ -28,5 +30,5 @@ export const EagerMap = props => {
             </div>
         )
     }
-    return <Map {...props} />
+    return <Map {...props} config={config}/>
 }

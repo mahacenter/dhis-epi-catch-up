@@ -1,5 +1,10 @@
 import moment from 'moment'
 
+const yearlyItems = [];
+for (let year = 2017; year <= moment().year() ; year++) {
+    yearlyItems.push({ label: year.toString(10), value: year.toString(10) })
+}
+
 export const periods = {
     Monthly: {
         label: 'Month',
@@ -45,12 +50,7 @@ export const periods = {
     },
     Yearly: {
         label: 'Year',
-        items: [
-            { label: '2017', value: '2017' },
-            { label: '2018', value: '2018' },
-            { label: '2019', value: '2019' },
-            { label: '2020', value: '2020' },
-        ],
+        items: yearlyItems,
         itemFormat: 'YYYY',
         momentFormat: 'YYYY',
         d2Format: 'YYYY',

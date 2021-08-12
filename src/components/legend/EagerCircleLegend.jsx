@@ -2,13 +2,15 @@ import React, {useEffect, useState} from 'react'
 import {CircularLoader} from '@dhis2/ui-core'
 import {getDataElement} from './../../js/api'
 import {CircleLegend} from "./CircleLegend";
+import {useConfig} from "@dhis2/app-runtime";
 
 export const EagerCircleLegend = props => {
     const {isReady, circleLegendRef, circleLegend, ouLevel, timeScale} = props;
     const [isLoading, setIsLoading] = useState(true);
+    const config = useConfig();
 
     useEffect(() => {
-        const periods = timeScale.map(period => getDataElement({
+        const periods = timeScale.map(period => getDataElement(config, {
             dataElement: circleLegend.dataElement.id,
             ouLevel: ouLevel,
             period: period.value,

@@ -15,13 +15,14 @@ import {dataObject} from "../../js/api";
 import {ChiefdomsSelector} from "../ChiefdomsSelector";
 import {CalendarHelpButton} from "./CalendarHelpButton";
 import {MultilineHelpButton} from "./MultilineHelpButton";
+import {lastYear} from "../../constants/periods";
 
 const timeScale = periodsRange('Monthly', {
     periodType: 'Monthly',
         startType: '01',
         startYear: 2019,
         endType: '12',
-        endYear: 2020,
+        endYear: lastYear,
 });
 
 export function CalendarGraphs({isCoverageRateCatchUpEnabled}) {
@@ -79,7 +80,7 @@ export function CalendarGraphs({isCoverageRateCatchUpEnabled}) {
                                                 dataObject[selectedIndicator?.id]?.[OU_LEVELS.DISTRICT],
                                                 districtUnits.organisationUnits,
                                                 timeScale,
-                                                new Date('2020-12-01'),
+                                                new Date(`${lastYear}12-01`),
                                             )}/>;
                                     }}/>
                             </Grid>
@@ -105,7 +106,7 @@ export function CalendarGraphs({isCoverageRateCatchUpEnabled}) {
                                                 dataObject[selectedIndicator?.id]?.[OU_LEVELS.CHIEFDOM],
                                                 selectedChiefdoms,
                                                 timeScale,
-                                                new Date('2020-12-01'),
+                                                new Date(`${lastYear}12-01`),
                                             )}/>;
                                     }}/>
                             </Grid>

@@ -62,3 +62,5 @@ export const periodNames = {
         return obj;
     }, {}),
 };
+
+export const lastYear = 2020;

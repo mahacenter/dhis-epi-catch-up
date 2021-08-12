@@ -1,11 +1,12 @@
+This project was bootstrapped with [DHIS2 Application Platform](https://github.com/dhis2/app-platform).
+
 # Maha DHIS EPI catch-up
 
 ## Requirements
-nodejs v11 is required to run or build this app
+nodejs v15 is required to run or build this app
 
 ## Install it on your own DHIS instance
 
-### Configuration
 Some features of this app target specifics indicators.
 So you have to update variables in `src/js/customDhisVariables.js` to match indicators ids of your own instance. The ids could be found using the pivot-table app (or any other app) while inspecting the network panel of your browser.
 
@@ -14,23 +15,48 @@ The following screenshots show how to find the `ids` of indicators and data-elem
 - [Find the DATA_GROUPS.IMMUNIZATION id](http://images.mahacenter.com/epi-catch-up/find_data_element_group_id.jpg)
 - [Find the INDICATORS.* ids](http://images.mahacenter.com/epi-catch-up/find_indicator_id.jpg)
 
-### Build
-- Run `npm install`
-- And `npm run build`
-  for building the app, the result will be a .zip file to be uploaded into the given DHIS2 instance in the "App Management" panel.
+Then follow the `yarn build` script section.
 
-## Contribute
+## Available Scripts
 
-### How-to use
-- Run `npm install`
-- Then `npm start` for development
+In the project directory, you can run:
 
-### Env parameters
-(Might be worth to refactor)
-- API version to be set in both :
-    - ./.env
-    - ./src/js/api.js
+### `yarn start`
 
-- API URL in both :
-    - ./.env.development
-    - ./src/js/api.js
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.<br />
+You will also see any lint errors in the console.
+
+### `yarn test`
+
+Launches the test runner and runs all available tests found in `/src`.<br />
+
+See the section about [running tests](https://platform.dhis2.nu/#/scripts/test) for more information.
+
+### `yarn build`
+
+Builds the app for production to the `build` folder.<br />
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.<br />
+A deployable `.zip` file can be found in `build/bundle`!
+
+See the section about [building](https://platform.dhis2.nu/#/scripts/build) for more information.
+
+### `yarn deploy`
+
+Deploys the built app in the `build` folder to a running DHIS2 instance.<br />
+This command will prompt you to enter a server URL as well as the username and password of a DHIS2 user with the App Management authority.<br/>
+You must run `yarn build` before running `yarn deploy`.<br />
+
+See the section about [deploying](https://platform.dhis2.nu/#/scripts/deploy) for more information.
+
+## Learn More
+
+You can learn more about the platform in the [DHIS2 Application Platform Documentation](https://platform.dhis2.nu/).
+
+You can learn more about the runtime in the [DHIS2 Application Runtime Documentation](https://runtime.dhis2.nu/).
+
+To learn React, check out the [React documentation](https://reactjs.org/).

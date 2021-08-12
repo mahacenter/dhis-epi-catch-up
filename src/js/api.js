@@ -11,10 +11,20 @@ var apiUrl = process.env.REACT_APP_DHIS2_BASE_URL
 var apiVersion = process.env.REACT_APP_DHIS2_API_VERSION
 var url = `${apiUrl}/api/${apiVersion}`
 
-var indicatorUrl = function(indicator, ouLevel, period) {
+const baseUrl = config => `${config.baseUrl}/api/${config.apiVersion}`
+const getParams = {
+    type: 'GET',
+    headers: headers,
+    xhrFields: {
+        withCredentials: true
+    }
+};
+
+var indicatorUrl = function(config, indicator, ouLevel, period) {
+    console.log('fetching indicator', config);
     var ou = _.isString(ouLevel) === true ? ouLevel : `LEVEL-${ouLevel}`
     return (
-        url +
+        baseUrl(config) +
         '/analytics.json?dimension=dx:' +
         indicator +
         '&dimension=ou:' +
@@ -24,10 +34,11 @@ var indicatorUrl = function(indicator, ouLevel, period) {
         '&displayProperty=SHORTNAME&skipData=false&skipMeta=true&includeNumDen=true'
     )
 }
-var dataElementUrl = function(dataElement, ouLevel, period) {
+var dataElementUrl = function(config, dataElement, ouLevel, period) {
+    console.log('fetching data element');
     var ou = _.isString(ouLevel) === true ? ouLevel : `LEVEL-${ouLevel}`
     return (
-        url +
+        baseUrl(config) +
         '/analytics.json?dimension=dx:' +
         dataElement +
         '&dimension=pe:' +
@@ -40,15 +51,14 @@ var dataElementUrl = function(dataElement, ouLevel, period) {
     )
 }
 
-var getGeom = (level, callback) => {
+var getGeom = (config, level, callback) => {
     if (!dataObject.geom) {
         dataObject.geom = {}
     }
     if (!dataObject.geom[level]) {
         $.ajax({
-            type: 'GET',
-            url: `${url}/organisationUnits.geojson?level=${level}`,
-            headers: headers,
+            ...getParams,
+            url: `${baseUrl(config)}/organisationUnits.geojson?level=${level}`,
             success: function(result) {
                 dataObject.geom[level] = result
                 callback(dataObject.geom[level])
@@ -59,7 +69,7 @@ var getGeom = (level, callback) => {
     }
 }
 
-var getOrgUnitList = async ({ level }) => {
+var getOrgUnitList = async (config, { level }) => {
     if (!dataObject.orgUnitList) {
         dataObject.orgUnitList = {}
     }
@@ -67,9 +77,8 @@ var getOrgUnitList = async ({ level }) => {
         return dataObject.orgUnitList[level]
     }
     const result = await $.ajax({
-        type: 'GET',
-        url: `${url}/organisationUnits?fields=name:id&paging=false&level=${level}`,
-        headers: headers
+        ...getParams,
+        url: `${baseUrl(config)}/organisationUnits?fields=name:id&paging=false&level=${level}`,
     })
     dataObject.orgUnitList[level] = result
     return result
@@ -79,7 +88,7 @@ var dataObject = {}
 var dataObjectPromise = {}
 var dataElementObject = {}
 
-var getIndicatorData = async ({ indicator, ouLevel, period }) => {
+var getIndicatorData = async (config, { indicator, ouLevel, period }) => {
     if (!dataObject[indicator]) {
         dataObject[indicator] = {}
         dataObjectPromise[indicator] = {}
@@ -95,25 +104,24 @@ var getIndicatorData = async ({ indicator, ouLevel, period }) => {
         return await dataObjectPromise[indicator][ouLevel][period]
     }
 
-    dataObjectPromise[indicator][ouLevel][period] = fetchIndicatorData(ouLevel, period, indicator);
+    dataObjectPromise[indicator][ouLevel][period] = fetchIndicatorData(config, ouLevel, period, indicator);
     const result = await dataObjectPromise[indicator][ouLevel][period];
     dataObject[indicator][ouLevel][period] = result
     delete dataObjectPromise[indicator][ouLevel][period];
 
     return result
 }
-function fetchIndicatorData(ouLevel, period, indicator) {
+function fetchIndicatorData(config, ouLevel, period, indicator) {
     const customIndicator = customIndicatorById[indicator]
     if (customIndicator) {
-        return fetchCustomIndicatorData(ouLevel, period, indicator)
+        return fetchCustomIndicatorData(config, ouLevel, period, indicator)
     }
     return $.ajax({
-        type: 'GET',
-        url: indicatorUrl(indicator, ouLevel, period),
-        headers: headers,
+        ...getParams,
+        url: indicatorUrl(config, indicator, ouLevel, period),
     })
 }
-var getDataElement = async ({ dataElement, ouLevel, period }) => {
+var getDataElement = async (config, { dataElement, ouLevel, period }) => {
     if (!dataElementObject[dataElement]) {
         dataElementObject[dataElement] = {}
     }
@@ -124,18 +132,17 @@ var getDataElement = async ({ dataElement, ouLevel, period }) => {
         return dataElementObject[dataElement][ouLevel][period]
     }
     const result = await $.ajax({
-        type: 'GET',
-        url: dataElementUrl(dataElement, ouLevel, period),
-        headers: headers,
+        ...getParams,
+        url: dataElementUrl(config, dataElement, ouLevel, period),
     })
     dataElementObject[dataElement][ouLevel][period] = result
     return result
 }
-async function fetchCustomIndicatorData(ouLevel, period, indicator) {
+async function fetchCustomIndicatorData(config, ouLevel, period, indicator) {
     const customIndicator = customIndicatorById[indicator]
     if (customIndicator) {
         // ensure data are all fetched
-        await Promise.all(customIndicator.indicators.map(requiredIndicator => getIndicatorData({
+        await Promise.all(customIndicator.indicators.map(requiredIndicator => getIndicatorData(config, {
             indicator: requiredIndicator,
             ouLevel,
             period,

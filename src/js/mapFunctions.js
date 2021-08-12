@@ -66,7 +66,7 @@ function getClasses(legend) {
     return legend.items.map(v => ({range: [v.startValue, v.endValue], color: v.color}));
 }
 
-var setLayerStyle = (layer, opacity, legend, selectedArea) => {
+const createLayerStyle = (layer, opacity, legend, selectedArea) => {
     return {
         do: function(data) {
             var dataRef = _.keyBy(data.rows, function(o) {
@@ -103,4 +103,4 @@ var setLayerStyle = (layer, opacity, legend, selectedArea) => {
     }
 }
 
-export { basemaps, layerSelector, setLayerStyle }
+export { basemaps, layerSelector, createLayerStyle }

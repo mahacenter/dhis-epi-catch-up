@@ -1,5 +1,5 @@
 import { useDataQuery } from '@dhis2/app-runtime'
-import { CircularLoader, ScreenCover } from '@dhis2/ui-core'
+import { CircularLoader, Layer } from '@dhis2/ui-core'
 import _ from 'lodash'
 import React from 'react'
 import { Panel } from './Panel'
@@ -83,6 +83,8 @@ function addCustomIndicators(group) {
 }
 
 function adaptGroupsToCustomer(data) {
+    console.log('Starting EPI Catch-up with following data');
+    console.log(data);
     return {
         ...data,
         indicatorGroups: {
@@ -107,9 +109,9 @@ export const Main = () => {
 
     if (loading || !data) {
         return (
-            <ScreenCover>
+            <Layer>
                 <CircularLoader />
-            </ScreenCover>
+            </Layer>
         )
     }
     if (error) return <span>{error.message}</span>

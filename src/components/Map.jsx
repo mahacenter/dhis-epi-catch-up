@@ -1,17 +1,18 @@
 // Don't know why, this import is required to make leaflet working
 /* eslint-disable */
-import D2map from '@dhis2/gis-api';
+// import D2map from '@dhis2/gis-api';
 /* eslint-enable */
 import React, {Component} from 'react'
 import {multiPolygon, polygon} from '@turf/helpers'
 import pointOnFeature from '@turf/point-on-feature'
 import L from 'leaflet'
 import _ from 'lodash'
-import {basemaps, layerSelector, setLayerStyle} from './../js/mapFunctions'
+import {basemaps, layerSelector, createLayerStyle} from './../js/mapFunctions'
 import {getIndicatorData, getGeom} from './../js/api'
 import {rgba} from "../js/colors";
 import {circleRadiusGenerator} from "./legend/CircleLegend";
 import {getDataElement, indexValueByName} from "../js/api";
+import 'leaflet/dist/leaflet.css';
 
 const mountCardId = 'epiMap';
 
@@ -117,7 +118,7 @@ export class Map extends Component {
             layers: [basemaps.OpenStreetMap_Mapnik]
         })
         // Request geo data
-        getGeom(this.props.ouLevel, (geom) => {
+        getGeom(this.props.config, this.props.ouLevel, (geom) => {
             organisationUnits = L.geoJson(geom, {
                 style: function () {
                     return {
@@ -134,7 +135,7 @@ export class Map extends Component {
                     })
                 }
             })
-            updateLayer = new setLayerStyle(organisationUnits, this.props.coverageLayerOpacity, this.props.legendRef, this.props.selectedArea)
+            updateLayer = createLayerStyle(organisationUnits, this.props.coverageLayerOpacity, this.props.legendRef, this.props.selectedArea)
             circleLayer = new CircleLayer(geom, this.props.circleLegend, this.props.circleLegendRef)
             layerSelector({}, this.map)
             organisationUnits.addTo(this.map);
@@ -147,11 +148,11 @@ export class Map extends Component {
         if (!organisationUnits) {
             return;
         }
-        updateLayer = new setLayerStyle(organisationUnits, this.props.coverageLayerOpacity, this.props.legendRef, this.props.selectedArea)
+        updateLayer = createLayerStyle(organisationUnits, this.props.coverageLayerOpacity, this.props.legendRef, this.props.selectedArea)
         circleLayer && circleLayer.updateLegend(this.map, this.props.circleLegend, this.props.circleLegendRef);
 
         if (prevProps.ouLevel !== this.props.ouLevel) {
-            getGeom(this.props.ouLevel, (geom) => {
+            getGeom(this.props.config, this.props.ouLevel, (geom) => {
                 circleLayer && circleLayer.remove();
                 circleLayer = new CircleLayer(geom, this.props.circleLegend, this.props.circleLegendRef);
                 organisationUnits.clearLayers()
@@ -164,7 +165,7 @@ export class Map extends Component {
     }
 
     refreshViewFromHistoryProps(prevProps) {
-        getIndicatorData({indicator: this.props.dx, ouLevel: this.props.ouLevel, period: this.props.historyPosition})
+        getIndicatorData(this.props.config, {indicator: this.props.dx, ouLevel: this.props.ouLevel, period: this.props.historyPosition})
             .then(data => updateLayer.do(data))
             .catch(error => console.log('error', error))
         this.updateAbsoluteFigues();
@@ -184,7 +185,7 @@ export class Map extends Component {
         if (!this.props.circleLegend?.dataElement?.id) {
             return;
         }
-        getDataElement({
+        getDataElement(this.props.config, {
             dataElement: this.props.circleLegend.dataElement.id,
             ouLevel: this.props.ouLevel,
             period: this.props.historyPosition
