@@ -5,18 +5,6 @@ This project was bootstrapped with [DHIS2 Application Platform](https://github.c
 ## Requirements
 nodejs v15 is required to run or build this app
 
-## Install it on your own DHIS instance
-
-Some features of this app target specifics indicators.
-So you have to update variables in `src/js/customDhisVariables.js` to match indicators ids of your own instance. The ids could be found using the pivot-table app (or any other app) while inspecting the network panel of your browser.
-
-The following screenshots show how to find the `ids` of indicators and data-elements in your DHIS.
-- [Find the INDICATOR_GROUPS.IMMUNIZATION id](http://images.mahacenter.com/epi-catch-up/find_group_id.jpg)
-- [Find the DATA_GROUPS.IMMUNIZATION id](http://images.mahacenter.com/epi-catch-up/find_data_element_group_id.jpg)
-- [Find the INDICATORS.* ids](http://images.mahacenter.com/epi-catch-up/find_indicator_id.jpg)
-
-Then follow the `yarn build` script section.
-
 ## Available Scripts
 
 In the project directory, you can run:

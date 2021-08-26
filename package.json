@@ -12,7 +12,8 @@
     "deploy": "d2-app-scripts deploy"
   },
   "devDependencies": {
-    "@dhis2/cli-app-scripts": "^7.3.0"
+    "@dhis2/cli-app-scripts": "^7.3.0",
+    "prettier": "^2.3.2"
   },
   "dependencies": {
     "@dhis2/app-runtime": "^2.8.0",
