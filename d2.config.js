@@ -1,5 +1,5 @@
 const config = {
-    name: 'dhis-epi-catch-up',
+    name: 'EPI Catch-Up',
     title: 'EPI Catch-Up',
     description: 'Appraisal of needs for catch-up vaccination campaigns and follow-up',
 
