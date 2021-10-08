@@ -666,7 +666,7 @@ export const Panel = () => {
                                             >
                                                 <IconButton
                                                     aria-label='export'
-                                                    title='Export PDF'
+                                                    title='Export this map'
                                                     size='small'
                                                     onClick={() => {
                                                         window.scrollTo(0, 0);
