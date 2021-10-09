@@ -1,8 +1,8 @@
 export const CUSTOM_LEGENDS = [
     {
         id: 'custom-epi-ghana',
-        name: 'EPI GHANA',
-        displayName: 'EPI GHANA',
+        name: 'EPI Legend',
+        displayName: 'EPI Legend',
         legends: [
             {
                 id: 'custom-epi-ghana-red',
@@ -49,6 +49,6 @@ export const CUSTOM_LEGENDS = [
                 endValue: 1000,
                 hideRangeValues: true,
             },
-        ]
-    }
-]
+        ],
+    },
+];
