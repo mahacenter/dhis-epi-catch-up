@@ -21,12 +21,10 @@ import Tab from '@material-ui/core/Tab';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Adjust, InsertDriveFileOutlined, Texture } from '@material-ui/icons';
+import { Adjust, Texture } from '@material-ui/icons';
 import Typography from '@material-ui/core/Typography';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import html2canvas from 'html2canvas';
-import { saveAs } from 'file-saver';
 import _ from 'lodash';
 import moment from 'moment';
 import React, { useCallback, useContext, useReducer, useState } from 'react';
@@ -54,6 +52,7 @@ import { ReactComponent as MahaBlack } from '../../images/MahaBlack.svg';
 import { IndicatorsContext } from '../../context/IndicatorsContext';
 import { CalendarGraphs } from '../calendar/CalendarGraphs';
 import './style.css';
+import { ExportButton } from '../ExportButton';
 
 const isLegendAuto = legend => legend === 'auto';
 
@@ -268,6 +267,8 @@ export const Panel = () => {
     previousApiPeriod = currentPeriod.value;
     const apiPeriod = currentPeriod.value;
     const currentIndicator = generateCurrentIndicator();
+    const currentIndicatorName =
+        currentIndicator.length > 0 ? currentIndicator[0].name : '';
 
     return (
         <main id='main'>
@@ -660,44 +661,11 @@ export const Panel = () => {
                                             <Box flexGrow={1}>
                                                 {currentPeriod.label}
                                             </Box>
-                                            <Box
-                                                className='boxed'
-                                                data-html2canvas-ignore
-                                            >
-                                                <IconButton
-                                                    aria-label='export'
-                                                    title='Export this map'
-                                                    size='small'
-                                                    onClick={() => {
-                                                        window.scrollTo(0, 0);
-                                                        html2canvas(
-                                                            document.querySelector(
-                                                                '#main-map'
-                                                            ),
-                                                            {
-                                                                allowTaint: true,
-                                                                useCORS: true,
-                                                            }
-                                                        ).then(canvas => {
-                                                            canvas.toBlob(
-                                                                function (
-                                                                    blob
-                                                                ) {
-                                                                    saveAs(
-                                                                        blob,
-                                                                        'wholePage.png'
-                                                                    );
-                                                                }
-                                                            );
-                                                        });
-                                                    }}
-                                                >
-                                                    <Box ml={1} mr={1}>
-                                                        Export
-                                                    </Box>{' '}
-                                                    <InsertDriveFileOutlined />
-                                                </IconButton>
-                                            </Box>
+                                            <ExportButton
+                                                id='main-map'
+                                                title='Export this map'
+                                                filename={`${currentIndicatorName} - ${currentPeriod.label}`}
+                                            />
                                         </Box>
                                         <Box mb='5px'>
                                             <EagerAdminAreaSelector
@@ -711,9 +679,7 @@ export const Panel = () => {
                                         </Box>
                                         <Box>
                                             <Typography gutterBottom>
-                                                {currentIndicator.length > 0
-                                                    ? currentIndicator[0].name
-                                                    : ''}
+                                                {currentIndicatorName}
                                             </Typography>
                                             <Divider />
                                             <Box mt={1}>
