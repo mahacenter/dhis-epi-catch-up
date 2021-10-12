@@ -1,6 +1,6 @@
 {
   "name": "dhis-epi-catch-up",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "DHIS2 EPI Catch-up app: Appraisal of needs for catch-up vaccination campaigns and follow-up",
   "homepage": "https://github.com/mahacenter/dhis-epi-catch-up",
   "license": "MIT",
