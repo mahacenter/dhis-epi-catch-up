@@ -14,32 +14,30 @@ function buildChartOptions(props) {
     const hasMoreThanOneLabel = Boolean(props.absolutePeriodsData);
     return {
         scales: {
-            yAxes: [
-                {
-                    type: 'linear',
-                    position: 'left',
-                    display: true,
-                    ticks: { min: 0, max: 120 },
-                    id: AXIS.AREA,
-                    scaleLabel: {
-                        display: hasMoreThanOneLabel,
-                        labelString: 'Coverage',
-                    },
-                },
-                {
-                    type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-                    position: 'right',
+            [AXIS.AREA]: {
+                type: 'linear',
+                position: 'left',
+                display: true,
+                ticks: { min: 0, max: 120 },
+                id: AXIS.AREA,
+                scaleLabel: {
                     display: hasMoreThanOneLabel,
-                    id: AXIS.ABSOLUTE,
-                    scaleLabel: {
-                        display: hasMoreThanOneLabel,
-                        labelString: props.circleLegend?.dataElement?.name,
-                    },
-                    gridLines: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
-                    },
+                    labelString: 'Coverage',
                 },
-            ],
+            },
+            [AXIS.ABSOLUTE]: {
+                type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                position: 'right',
+                display: hasMoreThanOneLabel,
+                id: AXIS.ABSOLUTE,
+                scaleLabel: {
+                    display: hasMoreThanOneLabel,
+                    labelString: props.circleLegend?.dataElement?.name,
+                },
+                gridLines: {
+                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                },
+            },
         },
         animation: {
             duration: 0,
