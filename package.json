@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "@dhis2/cli-app-scripts": "^7.3.0",
-    "prettier": "^2.3.2"
+    "@dhis2/cli-style": "^10.4.3",
+    "prettier": "^2.8.0"
   },
   "dependencies": {
     "@dhis2/app-runtime": "^2.8.0",
@@ -35,5 +36,6 @@
     "moment": "^2.25.3",
     "react-chartjs-2": "^3.0.4",
     "react-color": "^2.19.3"
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }

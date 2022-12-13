@@ -5,10 +5,34 @@ This project was bootstrapped with [DHIS2 Application Platform](https://github.c
 ## Requirements
 nodejs v15 is required to run or build this app
 
+ensure to have yarn v1:
+    
+    yarn set version 1.22.19
+
+### Run a dhis2 instance locally
+
+Create a postgres instance
+
+    docker run --name dhis-pg --env POSTGRES_PASSWORD=dhis --env POSTGRES_DB=dhis2 -d -p 5432:5432 postgis/postgis
+
+Download the demo data at https://databases.dhis2.org/. Then populate the database with:
+
+    gunzip dhis2-db-sierra-leone.sql.gz
+    docker exec -i dhis-pg psql -d dhis2 -U postgres < dhis2-db-sierra-leone.sql
+
+Create the dhis2 instance
+
+    docker run -d --link dhis-pg --name dhis2 -p 8080:8080 -v $PWD/docker:/DHIS2_home dhis2/core:2.37.8
+
+- Open http://localhost:8080 and login
+- Open "Data Administration"
+- Update the analytics tabLes
+
 ## Available Scripts
 
 In the project directory, you can run:
 
+### `yarn`
 ### `yarn start`
 
 Runs the app in the development mode.<br />

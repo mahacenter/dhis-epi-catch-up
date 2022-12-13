@@ -38,8 +38,9 @@ import {periodToYearAndMonth} from "../../js/dates";
  */
 function extractMonthlyValues(organisationUnits, indicatorsData, timeScale) {
     const byIdOU = _.keyBy(organisationUnits, unit => unit.id);
+    const timeScalePeriods = timeScale.map(period => period.value);
     const byMonthValues = _.reduce(indicatorsData, (acc, indicatorData, indicatorDataPeriod) => {
-        if (!timeScale.some(period => indicatorDataPeriod === period.value)) {
+        if (!timeScalePeriods.includes(indicatorDataPeriod)) {
             return acc;
         }
         const nameToIndex = indexValueByName(indicatorData.headers);
@@ -181,18 +182,20 @@ export function sumIndicatorNumerator(indicatorsData, organisationUnits, timeSca
     const sumThisYear = sumForYear(yearOfToday);
 
     const byRegionSumLastYear = _.keyBy(sumLastYear.subOUsSum, subOUSum => subOUSum.regionOrDistrict);
-    const subOUsDiffs = sumThisYear.subOUsSum.map(subOUSum => ({
-        regionOrDistrict: subOUSum.regionOrDistrict,
-        diff: Math.round(subOUSum.sum - byRegionSumLastYear[subOUSum.regionOrDistrict].sum),
-        sumOfThisYear: {
-            year: yearOfToday,
-            sum: subOUSum.sum,
-        },
-        sumOfLastYear: {
-            year: yearOfToday - 1,
-            sum: byRegionSumLastYear[subOUSum.regionOrDistrict].sum,
-        }
-    }));
+    const subOUsDiffs = sumThisYear.subOUsSum.map(subOUSum => {
+        return ({
+            regionOrDistrict: subOUSum.regionOrDistrict,
+            diff: Math.round(subOUSum.sum - byRegionSumLastYear[subOUSum.regionOrDistrict].sum),
+            sumOfThisYear: {
+                year: yearOfToday,
+                sum: subOUSum.sum,
+            },
+            sumOfLastYear: {
+                year: yearOfToday - 1,
+                sum: byRegionSumLastYear[subOUSum.regionOrDistrict].sum,
+            }
+        });
+    });
 
     const cumulated = {
         subOUsDiffs: subOUsDiffs,

@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+    dhis-pg:
+        image: postgis/postgis
+        environment:
+            - POSTGRES_PASSWORD=dhis
+            - POSTGRES_DB=dhis2
+        expose:
+            - 5432
+        ports:
+            - 5432:5432
+        networks:
+            - dhis2
+
+    dhis2:
+        image: dhis2/core:2.39.0
+        command: ls /opt/dhis2/
+        volumes:
+            - ./docker/:/opt/dhis2/
+        ports:
+            - 80:80
+            - 443:443
+        depends_on:
+            - dhis-pg
+        networks:
+            - dhis2
+
+networks:
+    dhis2:

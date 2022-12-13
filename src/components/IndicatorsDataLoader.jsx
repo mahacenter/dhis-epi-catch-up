@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {CircularLoader} from "@dhis2/ui-core";
-import {getIndicatorData} from './../js/api';
-import {getDataElement} from "../js/api";
 import {useConfig} from "@dhis2/app-runtime";
+import {CircularLoader} from "@dhis2/ui-core";
+import React, {useEffect, useState} from 'react';
+import {getIndicatorData,getDataElement} from './../js/api';
 
 export const IndicatorsDataLoader = props => {
     const {indicators, dataElements = [], ouLevel, timeScale, isReady, component} = props;

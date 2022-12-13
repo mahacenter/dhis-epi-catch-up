@@ -11,45 +11,45 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import RefreshIcon from '@material-ui/icons/Refresh';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Slider from '@material-ui/core/Slider'; // TODO: Change when in core
-import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import { Adjust, Texture } from '@material-ui/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Adjust, Texture } from '@material-ui/icons';
-import Typography from '@material-ui/core/Typography';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import _ from 'lodash';
 import moment from 'moment';
 import React, { useCallback, useContext, useReducer, useState } from 'react';
-import { generateMarks } from '../../js/generateMarks';
-import { periods, periodsRange } from '../../periods';
-import { EagerMap } from '../EagerMap';
-import { IndicatorSelector } from '../IndicatorSelector';
-import { EagerAdminAreaSelector } from '../EagerAdminAreaSelector';
-import Legend from '../legend/Legend';
-import { getAutomaticLegendItems } from '../../util/legend';
-import { LegendSelector } from '../LegendSelector';
-import { Classification } from '../classification/Classification';
 import { CLASSIFICATION_EQUAL_INTERVALS } from '../../constants/layers';
-import { TimeFrame } from '../TimeFrame';
+import { IndicatorsContext } from '../../context/IndicatorsContext';
+import { ReactComponent as MahaBlack } from '../../images/MahaBlack.svg';
 import { dataElementObject, dataObject, indexValueByName } from '../../js/api';
-import { EagerChart } from '../EagerChart';
 import {
     customIndicatorById,
     customLegendById,
 } from '../../js/customIndicators';
+import { generateMarks } from '../../js/generateMarks';
+import { periods, periodsRange } from '../../periods';
+import { getAutomaticLegendItems } from '../../util/legend';
+import { Classification } from '../classification/Classification';
+import { EagerAdminAreaSelector } from '../EagerAdminAreaSelector';
+import { EagerMap } from '../EagerMap';
+import { IndicatorSelector } from '../IndicatorSelector';
+import Legend from '../legend/Legend';
+import { LegendSelector } from '../LegendSelector';
 import { TabPanel } from '../TabPanel';
+import { TimeFrame } from '../TimeFrame';
+import { EagerChart } from '../EagerChart';
 import { CircleLegendEdition } from '../legend/CircleLegendEdition';
 import { EagerCircleLegend } from '../legend/EagerCircleLegend';
-import { ReactComponent as MahaBlack } from '../../images/MahaBlack.svg';
-import { IndicatorsContext } from '../../context/IndicatorsContext';
 import { CalendarGraphs } from '../calendar/CalendarGraphs';
 import './style.css';
 import { ExportButton } from '../ExportButton';
@@ -202,10 +202,10 @@ export const Panel = () => {
                 // check if contains min or max values
                 data.rows.forEach(row => {
                     const circleValue = _.toNumber(row[nameToIndex['value']]);
-                    if (!min) min = circleValue;
-                    if (!max) max = circleValue;
-                    if (circleValue < min) min = circleValue;
-                    if (circleValue > max) max = circleValue;
+                    if (!min) {min = circleValue;}
+                    if (!max) {max = circleValue;}
+                    if (circleValue < min) {min = circleValue;}
+                    if (circleValue > max) {max = circleValue;}
                 });
             }
         );
@@ -259,7 +259,7 @@ export const Panel = () => {
         }
     }, [legend]);
 
-    if (!data || !indicatorGroup) return <span>No data...</span>;
+    if (!data || !indicatorGroup) {return <span>No data...</span>;}
 
     const sliderTest = history <= timeScale.length;
     const sliderPos = rectifySliderPosition(sliderTest);
@@ -552,7 +552,7 @@ export const Panel = () => {
                                     <AccordionDetails>
                                         <FormGroup>
                                             <FormControlLabel
-                                                label='Coverage rate difference 2019/2020'
+                                                label='Coverage rate difference'
                                                 control={
                                                     <Checkbox
                                                         onChange={() =>
